@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
+import com.nicson.apipostgres.models.Category;
 import com.nicson.apipostgres.models.Order;
 import com.nicson.apipostgres.models.Product;
 import com.nicson.apipostgres.models.User;
 import com.nicson.apipostgres.models.enums.OrderStatus;
+import com.nicson.apipostgres.repositories.CategoryRepository;
 import com.nicson.apipostgres.repositories.OrderRepository;
 import com.nicson.apipostgres.repositories.ProductRepository;
 import com.nicson.apipostgres.repositories.UserRepository;
@@ -28,6 +30,9 @@ public class Init implements CommandLineRunner {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @Override
     public void run(String... args) throws Exception {
         User u1 = new User(null, "Maria Brown", "maria@gmail.com", "988888888", "123456");
@@ -37,6 +42,10 @@ public class Init implements CommandLineRunner {
         Order o2 = new Order(0, new Date(), OrderStatus.WAITING_PAYMENT, u2);
         Order o3 = new Order(0, new Date(), OrderStatus.SHIPPED, u1);
 
+        Category cat1 = new Category(0, "Electronics");
+        Category cat2 = new Category(0, "Books");
+        Category cat3 = new Category(0, "Computers");
+
         Product p1 = new Product(0, "The Lord of the Rings", "Lorem ipsum dolor sit amet, consectetur.", 90.5, "");
         Product p2 = new Product(0, "Smart TV", "Nulla eu imperdiet purus. Maecenas ante.", 2190.0, "");
         Product p3 = new Product(0, "Macbook Pro", "Nam eleifend maximus tortor, at mollis.", 1250.0, "");
@@ -45,7 +54,8 @@ public class Init implements CommandLineRunner {
 
         userRepository.saveAll(Arrays.asList(u1, u2));
         orderRepository.saveAll(Arrays.asList(o1, o2, o3));
-        productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p4));
+        categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
+        productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p4, p5));
     }
 
 }
