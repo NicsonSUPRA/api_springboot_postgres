@@ -2,10 +2,16 @@ package com.nicson.apipostgres.models;
 
 import java.io.Serializable;
 
+import java.util.Set;
+import java.util.HashSet;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -21,6 +27,10 @@ public class Product implements Serializable {
     private String description;
     private double price;
     private String urlImage;
+
+    @ManyToMany
+    @JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "id_product"), inverseJoinColumns = @JoinColumn(name = "id_category"))
+    private Set<Category> categories = new HashSet<>();
 
     public Product() {
     }
@@ -71,6 +81,10 @@ public class Product implements Serializable {
 
     public void setUrlImage(String urlImage) {
         this.urlImage = urlImage;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
     }
 
     @Override
