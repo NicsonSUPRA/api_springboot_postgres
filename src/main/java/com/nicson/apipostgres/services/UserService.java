@@ -33,4 +33,8 @@ public class UserService {
     public List<User> findByName(String name) {
         return repository.findByNameIgnoreCaseContaining(name);
     }
+
+    public User insert(User user) {
+        return repository.save(user);
+    }
 }
