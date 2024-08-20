@@ -13,7 +13,6 @@ import com.nicson.apipostgres.services.exceptions.ResourceNotFoundException;
 @Service
 public class UserService {
 
-    private static final String Optional = null;
     @Autowired
     private UserRepository repository;
 
