@@ -45,8 +45,6 @@ public class UserService {
     }
 
     public User obterPorLogin(String login) {
-
-    public User findUserByLogin(String login) {
         return repository.findByEmail(login);
     }
 }

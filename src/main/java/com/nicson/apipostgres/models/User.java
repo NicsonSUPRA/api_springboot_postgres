@@ -29,7 +29,6 @@ public class User {
     private String phone;
     private String password;
     private List<String> roles;
-    private List<Role> roles;
     @JsonIgnore
     @OneToMany(mappedBy = "client")
     private List<Order> orders = new ArrayList<>();
@@ -94,12 +93,6 @@ public class User {
     }
 
     public void setRoles(List<String> roles) {
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 

@@ -56,8 +56,6 @@ public class Init implements CommandLineRunner {
         u1.setRoles(Arrays.asList("ADMIN", "USER"));
         User u2 = new User(null, "Alex Green", "alex@gmail.com", "977777777", "123456");
         u2.setRoles(Arrays.asList("USER"));
-        u1.setRoles(Arrays.asList(r1));
-        u2.setRoles(Arrays.asList(r1, r2));
 
         Order o1 = new Order(0, new Date(), OrderStatus.PAID, u1);
         Order o2 = new Order(0, new Date(), OrderStatus.WAITING_PAYMENT, u2);
