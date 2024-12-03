@@ -3,8 +3,12 @@ package com.nicson.apipostgres.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.Type;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import io.hypersistence.utils.hibernate.type.array.ListArrayType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +28,7 @@ public class User {
     private String email;
     private String phone;
     private String password;
+    private List<String> roles;
     @JsonIgnore
     @OneToMany(mappedBy = "client")
     private List<Order> orders = new ArrayList<>();
@@ -83,6 +88,14 @@ public class User {
         return orders;
     }
 
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -130,6 +143,12 @@ public class User {
         } else if (!password.equals(other.password))
             return false;
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "User [id=" + id + ", name=" + name + ", email=" + email + ", phone=" + phone + ", password=" + password
+                + ", roles=" + roles + "]";
     }
 
 }

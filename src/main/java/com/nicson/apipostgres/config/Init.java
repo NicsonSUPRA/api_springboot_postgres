@@ -18,12 +18,16 @@ import com.nicson.apipostgres.repositories.OrderItemRepository;
 import com.nicson.apipostgres.repositories.OrderRepository;
 import com.nicson.apipostgres.repositories.ProductRepository;
 import com.nicson.apipostgres.repositories.UserRepository;
+import com.nicson.apipostgres.services.UserService;
 
 @Configuration
 public class Init implements CommandLineRunner {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private OrderRepository orderRepository;
@@ -40,7 +44,9 @@ public class Init implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         User u1 = new User(null, "Maria Brown", "maria@gmail.com", "988888888", "123456");
+        u1.setRoles(Arrays.asList("ADMIN", "USER"));
         User u2 = new User(null, "Alex Green", "alex@gmail.com", "977777777", "123456");
+        u2.setRoles(Arrays.asList("USER"));
 
         Order o1 = new Order(0, new Date(), OrderStatus.PAID, u1);
         Order o2 = new Order(0, new Date(), OrderStatus.WAITING_PAYMENT, u2);
@@ -67,11 +73,14 @@ public class Init implements CommandLineRunner {
         p4.getCategories().add(cat3);
         p5.getCategories().add(cat2);
 
-        userRepository.saveAll(Arrays.asList(u1, u2));
+        // userRepository.saveAll(Arrays.asList(u1, u2));
+        userService.insert(u1);
+        userService.insert(u2);
         orderRepository.saveAll(Arrays.asList(o1, o2, o3));
         categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
         productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p4, p5));
         orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
+        System.out.println(userService.obterPorLogin("maria@gmail.com"));
     }
 
 }

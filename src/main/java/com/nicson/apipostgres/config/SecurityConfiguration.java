@@ -15,6 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.nicson.apipostgres.security.CustomUserDetailService;
+import com.nicson.apipostgres.services.UserService;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
@@ -28,7 +31,7 @@ public class SecurityConfiguration {
                     configurer.loginPage("/login").permitAll();
                 })
                 .authorizeHttpRequests(authorize -> {
-                    authorize.requestMatchers(HttpMethod.POST, "/users/**").hasRole("ADMIN");
+                    authorize.requestMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN");
                     authorize.requestMatchers("/orders/**").hasAnyRole("ADMIN", "USER");
                     authorize.anyRequest().authenticated();
                 })
@@ -41,20 +44,21 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder encoder) {
+    public UserDetailsService userDetailsService(UserService userService) {
 
-        UserDetails user1 = User.builder()
-                .username("nicson")
-                .password(encoder.encode("123"))
-                .roles("USER")
-                .build();
+        // UserDetails user1 = User.builder()
+        // .username("nicson")
+        // .password(encoder.encode("123"))
+        // .roles("USER")
+        // .build();
 
-        UserDetails user2 = User.builder()
-                .username("admin")
-                .password(encoder.encode("admin"))
-                .roles("ADMIN")
-                .build();
+        // UserDetails user2 = User.builder()
+        // .username("admin")
+        // .password(encoder.encode("admin"))
+        // .roles("ADMIN")
+        // .build();
 
-        return new InMemoryUserDetailsManager(user1, user2);
+        // return new InMemoryUserDetailsManager(user1, user2);
+        return new CustomUserDetailService(userService);
     }
 }
