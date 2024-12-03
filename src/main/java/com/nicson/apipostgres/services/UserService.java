@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.nicson.apipostgres.models.User;
@@ -12,6 +13,9 @@ import com.nicson.apipostgres.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UserService {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserRepository repository;
@@ -34,6 +38,13 @@ public class UserService {
     }
 
     public User insert(User user) {
-        return repository.save(user);
+        String password = user.getPassword();
+        user.setPassword(passwordEncoder.encode(password));
+        repository.save(user);
+        return user;
+    }
+
+    public User findUserByLogin(String login) {
+        return repository.findByEmail(login);
     }
 }
