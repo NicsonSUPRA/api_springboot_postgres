@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.nicson.apipostgres.models.User;
 import com.nicson.apipostgres.repositories.UserRepository;
+import com.nicson.apipostgres.security.SecurityService;
 import com.nicson.apipostgres.services.exceptions.ResourceNotFoundException;
 
 @Service

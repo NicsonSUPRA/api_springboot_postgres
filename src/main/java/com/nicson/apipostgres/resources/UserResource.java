@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,7 +45,8 @@ public class UserResource {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<User> insert(@RequestBody User user) {
+    public ResponseEntity<User> insert(@RequestBody User user, Authentication authentication) {
+        System.out.println(authentication);
         user = service.insert(user);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")

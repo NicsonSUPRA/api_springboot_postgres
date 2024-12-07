@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -20,6 +21,7 @@ import com.nicson.apipostgres.services.UserService;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfiguration {
 
     @Bean
@@ -27,14 +29,21 @@ public class SecurityConfiguration {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
-                .formLogin(configurer -> {
-                    configurer.loginPage("/login").permitAll();
-                })
+                // .formLogin(configurer -> {
+                // configurer.loginPage("/login").permitAll();
+                // })
+                .oauth2Login(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> {
-                    authorize.requestMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN");
-                    authorize.requestMatchers(HttpMethod.POST, "/users/**").permitAll();
-                    authorize.requestMatchers("/orders/**").hasAnyRole("ADMIN", "USER");
-                    authorize.anyRequest().authenticated();
+                    authorize
+                            .requestMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN");
+                    authorize
+                            .requestMatchers(HttpMethod.POST, "/users/**").permitAll();
+                    authorize
+                            .requestMatchers(HttpMethod.POST, "/categories/**").permitAll();
+                    authorize
+                            .requestMatchers("/orders/**").hasAnyRole("ADMIN", "USER");
+                    authorize
+                            .anyRequest().authenticated();
                 })
                 .build();
     }
@@ -46,20 +55,6 @@ public class SecurityConfiguration {
 
     @Bean
     public UserDetailsService userDetailsService(UserService userService) {
-
-        // UserDetails user1 = User.builder()
-        // .username("nicson")
-        // .password(encoder.encode("123"))
-        // .roles("USER")
-        // .build();
-
-        // UserDetails user2 = User.builder()
-        // .username("admin")
-        // .password(encoder.encode("admin"))
-        // .roles("ADMIN")
-        // .build();
-
-        // return new InMemoryUserDetailsManager(user1, user2);
         return new CustomUserDetailService(userService);
     }
 }
