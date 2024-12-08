@@ -24,37 +24,37 @@ import com.nicson.apipostgres.services.UserService;
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfiguration {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity
-                .csrf(AbstractHttpConfigurer::disable)
-                .httpBasic(Customizer.withDefaults())
-                // .formLogin(configurer -> {
-                // configurer.loginPage("/login").permitAll();
-                // })
-                .oauth2Login(Customizer.withDefaults())
-                .authorizeHttpRequests(authorize -> {
-                    authorize
-                            .requestMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN");
-                    authorize
-                            .requestMatchers(HttpMethod.POST, "/users/**").permitAll();
-                    authorize
-                            .requestMatchers(HttpMethod.POST, "/categories/**").permitAll();
-                    authorize
-                            .requestMatchers("/orders/**").hasAnyRole("ADMIN", "USER");
-                    authorize
-                            .anyRequest().authenticated();
-                })
-                .build();
-    }
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+                return httpSecurity
+                                .csrf(AbstractHttpConfigurer::disable)
+                                .httpBasic(Customizer.withDefaults())
+                                // .formLogin(configurer -> {
+                                // configurer.loginPage("/login").permitAll();
+                                // })
+                                .oauth2Login(Customizer.withDefaults())
+                                .authorizeHttpRequests(authorize -> {
+                                        authorize
+                                                        .requestMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN");
+                                        authorize
+                                                        .requestMatchers(HttpMethod.POST, "/users/**").permitAll();
+                                        authorize
+                                                        .requestMatchers(HttpMethod.POST, "/categories/**").permitAll();
+                                        authorize
+                                                        .requestMatchers("/orders/**").hasAnyRole("ADMIN", "USER");
+                                        authorize
+                                                        .anyRequest().authenticated();
+                                })
+                                .build();
+        }
 
-    @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
-    }
+        @Bean
+        public PasswordEncoder encoder() {
+                return new BCryptPasswordEncoder();
+        }
 
-    @Bean
-    public UserDetailsService userDetailsService(UserService userService) {
-        return new CustomUserDetailService(userService);
-    }
+        // @Bean
+        public UserDetailsService userDetailsService(UserService userService) {
+                return new CustomUserDetailService(userService);
+        }
 }

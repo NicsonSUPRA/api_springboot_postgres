@@ -49,13 +49,13 @@ public class Init implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        Role r1 = new Role("ADMIN");
-        Role r2 = new Role("USER");
+        Role r1 = new Role("ROLE_ADMIN");
+        Role r2 = new Role("ROLE_USER");
 
         User u1 = new User(null, "Maria Brown", "maria@gmail.com", "988888888", "123456");
-        u1.setRoles(Arrays.asList("ADMIN", "USER"));
+        u1.setRoles(Arrays.asList("ROLE_ADMIN", "ROLE_USER"));
         User u2 = new User(null, "Alex Green", "alex@gmail.com", "977777777", "123456");
-        u2.setRoles(Arrays.asList("USER"));
+        u2.setRoles(Arrays.asList("ROLE_USER"));
 
         Order o1 = new Order(0, new Date(), OrderStatus.PAID, u1);
         Order o2 = new Order(0, new Date(), OrderStatus.WAITING_PAYMENT, u2);
