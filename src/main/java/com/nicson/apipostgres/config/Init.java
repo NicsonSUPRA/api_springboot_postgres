@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
 import com.nicson.apipostgres.models.Category;
+import com.nicson.apipostgres.models.Client;
 import com.nicson.apipostgres.models.Order;
 import com.nicson.apipostgres.models.OrderItem;
 import com.nicson.apipostgres.models.Product;
@@ -15,6 +16,7 @@ import com.nicson.apipostgres.models.Role;
 import com.nicson.apipostgres.models.User;
 import com.nicson.apipostgres.models.enums.OrderStatus;
 import com.nicson.apipostgres.repositories.CategoryRepository;
+import com.nicson.apipostgres.repositories.ClientRepository;
 import com.nicson.apipostgres.repositories.OrderItemRepository;
 import com.nicson.apipostgres.repositories.OrderRepository;
 import com.nicson.apipostgres.repositories.ProductRepository;
@@ -46,6 +48,9 @@ public class Init implements CommandLineRunner {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private ClientRepository clientRepository;
+
     @Override
     public void run(String... args) throws Exception {
 
@@ -53,9 +58,13 @@ public class Init implements CommandLineRunner {
         Role r2 = new Role("ROLE_USER");
 
         User u1 = new User(null, "Maria Brown", "maria@gmail.com", "988888888", "123456");
-        u1.setRoles(Arrays.asList("ROLE_ADMIN", "ROLE_USER"));
+        u1.setRoles(Arrays.asList("ADMIN", "USER"));
+        User u3 = new User(null, "Nicson Costa", "nicsoncc1234@gmail.com", "86999979918", "123456");
+        u3.setRoles(Arrays.asList("ADMIN", "USER"));
         User u2 = new User(null, "Alex Green", "alex@gmail.com", "977777777", "123456");
-        u2.setRoles(Arrays.asList("ROLE_USER"));
+        u2.setRoles(Arrays.asList("USER"));
+
+        Client c1 = new Client(null, "meu_cliente", "client_secret", "http://localhost:8080/authorized", "ADMIN");
 
         Order o1 = new Order(0, new Date(), OrderStatus.PAID, u1);
         Order o2 = new Order(0, new Date(), OrderStatus.WAITING_PAYMENT, u2);
@@ -85,6 +94,8 @@ public class Init implements CommandLineRunner {
         // userRepository.saveAll(Arrays.asList(u1, u2));
         userService.insert(u1);
         userService.insert(u2);
+        userService.insert(u3);
+        clientRepository.save(c1);
         orderRepository.saveAll(Arrays.asList(o1, o2, o3));
         categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
         productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p4, p5));
